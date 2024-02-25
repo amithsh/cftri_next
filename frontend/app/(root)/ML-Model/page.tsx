@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { any, z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -24,9 +24,9 @@ import {
 } from "@/components/ui/select";
 
 const formSchema = z.object({
-  room_temperature: z.number().min(0).step(1),
+  room_temperature: z.number(),
   code: z.number().min(0).max(1).step(1),
-  chab: z.number().min(0).step(1),
+  chab: z.number(),
   sdchab: z.number().min(0).step(1),
   L: z.number().min(0).max(100).step(1),
   a: z.number().min(-128).max(128).step(1),
@@ -76,26 +76,29 @@ const Page = () => {
   }
 
   return (
-    <div className="flex p-10 justify-center h-screen max-w-[1300px] gap-10">
+    <div className="flex flex-col h-auto p-10 items-center justify-center   bg-black gap-10">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className=" grid grid-cols-2 gap-12"
+          className="   min-w-[700px] max-w-[700px] text-white "
         >
           <FormField
+              
             control={form.control}
             name="room_temperature"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mb-5">
                 <FormLabel>Temperature</FormLabel>
-                <FormControl>
+                <FormControl className="bg-slate-900">
                   <Input
                     type="number"
+                    
                     {...field}
                     onChange={(e) =>
                       field.onChange(parseInt(e.target.value, 10))
                     }
                   />
+                  
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -105,11 +108,11 @@ const Page = () => {
             control={form.control}
             name="code"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>select the code either MAP or P</FormLabel>
-                <FormControl>
-                  <Select>
-                    <SelectTrigger className="w-[180px]">
+              <FormItem className="mb-5">
+                <FormLabel>select the code either MAP or Control</FormLabel>
+                <FormControl className="bg-slate-900">
+                  <Select >
+                    <SelectTrigger className="w-[180px] bg-slate-900">
                       <SelectValue placeholder="Code" />
                     </SelectTrigger>
                     <SelectContent>
@@ -129,9 +132,9 @@ const Page = () => {
             control={form.control}
             name="chab"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mb-5">
                 <FormLabel>Total Chlorophyll</FormLabel>
-                <FormControl>
+                <FormControl className="bg-slate-900">
                   <Input
                     type="number"
                     {...field}
@@ -148,9 +151,9 @@ const Page = () => {
             control={form.control}
             name="sdchab"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mb-5">
                 <FormLabel>SD</FormLabel>
-                <FormControl>
+                <FormControl className="bg-slate-900">
                   <Input
                     type="number"
                     {...field}
@@ -167,9 +170,9 @@ const Page = () => {
             control={form.control}
             name="L"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mb-5">
                 <FormLabel>L* (Lightness)</FormLabel>
-                <FormControl>
+                <FormControl className="bg-slate-900">
                   <Input
                     type="number"
                     {...field}
@@ -186,9 +189,9 @@ const Page = () => {
             control={form.control}
             name="a"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mb-5">
                 <FormLabel>a* (Green to Red)</FormLabel>
-                <FormControl>
+                <FormControl className="bg-slate-900">
                   <Input
                     type="number"
                     {...field}
@@ -205,9 +208,9 @@ const Page = () => {
             control={form.control}
             name="b"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mb-5">
                 <FormLabel>b* (Blue to Yellow)</FormLabel>
-                <FormControl>
+                <FormControl className="bg-slate-900">
                   <Input
                     type="number"
                     {...field}
@@ -224,9 +227,9 @@ const Page = () => {
             control={form.control}
             name="hue_angle"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mb-5">
                 <FormLabel>Hue Angle</FormLabel>
-                <FormControl>
+                <FormControl className="bg-slate-900">
                   <Input
                     type="number"
                     {...field}
@@ -239,13 +242,14 @@ const Page = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Predict Storage Duration</Button>
+          <Button type="submit" className="mt-7 bg-slate-700">Predict Storage Duration</Button>
         </form>
       </Form>
-      <div className="ml-28 max-h-16 rounded-xl shadow-xl p-4 bg-green-200 flex items-center justify-center">
-        <h1>
+      <div className="  min-w-[700px] max-w-[700px] text-white rounded-xl shadow-xl p-4 bg-lime-700 flex items-center justify-center">
+        <h1 className="">
           The shelf life will be
-          <span className="text-4xl font-bold ml-5">{prediction}</span>
+          <span className="text-4xl ml-2  mr-2 font-bold underlined">{prediction}</span>
+          days
         </h1>
       </div>
     </div>

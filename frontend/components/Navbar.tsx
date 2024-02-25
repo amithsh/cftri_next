@@ -32,7 +32,7 @@ const Navbar = () => {
     // },
   ];
   return (
-    <div className="w-full bg-green-400 px-48">
+    <div className="w-full bg-green-600 px-48">
       <div className="flex flex-row items-center justify-start gap-5 ">
         {list.map((item) => (
           <Link href={item.url} key={item.title} className="p-2">

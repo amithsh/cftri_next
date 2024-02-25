@@ -19,9 +19,9 @@ const roboto = Roboto({ subsets: ["latin"], weight: "300" });
 export default function Home() {
   const images = Images;
   return (
-    <div className="w-full min-h-screen px-48 mt-4">
+    <div className=" h-auto w-auto px-48 mt-4">
       <div className="flex flex-row items-center gap-x-7 justify-center p-9">
-        <div className="w-auto h-auto rounded-lg max-w-[800px]">
+        <div className="w-auto h-auto rounded-lg max-w-[1000px]">
           <section className="flex items-center justify-center">
             <Swiper
               spaceBetween={1}
@@ -49,8 +49,8 @@ export default function Home() {
             </Swiper>
           </section>
         </div>
-        <div className="flex flex-col items-center justify-between gap-4 ml-8">
-          <div className="flex flex-col items-center justify-center gap-6">
+        <div className="flex flex-col items-center  justify-between gap-12 ml-8">
+          <div className="flex flex-col items-center justify-center ">
             <h1
               className={cn(
                 "text-xl font-extrabold text-green-500",
@@ -63,12 +63,12 @@ export default function Home() {
               <Image
                 src={"/image1.jpg"}
                 alt="image2"
-                width={400}
+                width={500}
                 height={400}
               />
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center gap-6">
+          <div className="flex flex-col items-center justify-center ">
             <h1
               className={cn(
                 "text-xl font-extrabold text-green-500",
