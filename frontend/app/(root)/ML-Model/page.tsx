@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { any, z } from "zod";
+import { any, date, z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,8 +25,8 @@ import {
 
 const formSchema = z.object({
   room_temperature: z.number(),
-  code: z.number().min(0).max(1).step(1),
-  chab: z.number(),
+  code: z.number().min(0).max(1),
+  chab: z.number().min(32).max(39),
   sdchab: z.number().min(0).step(1),
   L: z.number().min(0).max(100).step(1),
   a: z.number().min(-128).max(128).step(1),
@@ -35,12 +35,12 @@ const formSchema = z.object({
 });
 
 const Page = () => {
-  const [prediction, setPrediction] = useState("");
+  const [prediction, setPrediction] = useState(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       room_temperature: 0,
-      code: 1,
+      code: 0,
       chab: 0,
       sdchab: 0,
       L: 0,
@@ -50,9 +50,9 @@ const Page = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  console.log("this is predictions", prediction);
 
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const response = await fetch("http://127.0.0.1:5000/predict", {
         method: "POST",
@@ -67,9 +67,8 @@ const Page = () => {
       }
 
       const data = await response.json();
-      const roundedDuration = Number(data.predicted_duration).toFixed(0);
-      console.log("Predicted Storage Duration:", roundedDuration);
-      setPrediction(roundedDuration);
+
+      setPrediction(data);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -83,7 +82,6 @@ const Page = () => {
           className="   min-w-[700px] max-w-[700px] text-white "
         >
           <FormField
-              
             control={form.control}
             name="room_temperature"
             render={({ field }) => (
@@ -92,13 +90,11 @@ const Page = () => {
                 <FormControl className="bg-slate-900">
                   <Input
                     type="number"
-                    
                     {...field}
                     onChange={(e) =>
                       field.onChange(parseInt(e.target.value, 10))
                     }
                   />
-                  
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -111,15 +107,29 @@ const Page = () => {
               <FormItem className="mb-5">
                 <FormLabel>select the code either MAP or Control</FormLabel>
                 <FormControl className="bg-slate-900">
-                  <Select >
+                  <Select>
                     <SelectTrigger className="w-[180px] bg-slate-900">
                       <SelectValue placeholder="Code" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="0" onClick={() => field.onChange("0")}>
+                      <SelectItem
+                        value="0"
+                        onClick={() => {
+                          console.log("Clicked on MAP");
+                          field.onChange("0");
+                          form.setValue("code", 0); // Update the 'code' value in the form state
+                        }}
+                      >
                         MAP
                       </SelectItem>
-                      <SelectItem value="1" onClick={() => field.onChange("1")}>
+                      <SelectItem
+                        value="1"
+                        onClick={() => {
+                          console.log("Clicked on P");
+                          field.onChange("1");
+                          form.setValue("code", 1); // Update the 'code' value in the form state
+                        }}
+                      >
                         P
                       </SelectItem>
                     </SelectContent>
@@ -133,7 +143,7 @@ const Page = () => {
             name="chab"
             render={({ field }) => (
               <FormItem className="mb-5">
-                <FormLabel>Total Chlorophyll</FormLabel>
+                <FormLabel>Total Chlorophyll (choose between 32-39)</FormLabel>
                 <FormControl className="bg-slate-900">
                   <Input
                     type="number"
@@ -242,16 +252,24 @@ const Page = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="mt-7 bg-slate-700">Predict Storage Duration</Button>
+          <Button type="submit" className="mt-7 bg-slate-700">
+            Predict Storage Duration
+          </Button>
         </form>
       </Form>
-      <div className="  min-w-[700px] max-w-[700px] text-white rounded-xl shadow-xl p-4 bg-lime-700 flex items-center justify-center">
-        <h1 className="">
-          The shelf life will be
-          <span className="text-4xl ml-2  mr-2 font-bold underlined">{prediction}</span>
-          days
-        </h1>
-      </div>
+
+      {prediction &&
+        Object.entries(prediction).map(([modelName, modelData]) => (
+          <div className="  min-w-[700px] max-w-[700px] text-white rounded-xl shadow-xl p-4 bg-lime-700  justify-center">
+            <div key={modelName} className="grid-cols-3 gap-3">
+              <div className="">
+                <h3 className="mb-2">{modelName}</h3>
+                <p>Accuracy: {modelData?.accuracy}</p>
+                <p>Predicted Duration: {modelData?.predicted_duration}</p>
+              </div>
+            </div>
+          </div>
+        ))}
     </div>
   );
 };

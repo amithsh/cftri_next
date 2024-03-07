@@ -64,7 +64,7 @@ const Navbar = () => {
             </PopoverTrigger>
             <PopoverContent>
               <div className="items-center flex ">
-                  <Link href={"/ML-Model"}><h1>Brocollie Shelflife model</h1></Link>
+                  <Link href={"/ML-Model"}><h1>Broccoli Shelflife model</h1></Link>
               </div>
             </PopoverContent>
           </Popover>
