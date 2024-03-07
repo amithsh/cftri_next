@@ -105,35 +105,15 @@ const Page = () => {
             name="code"
             render={({ field }) => (
               <FormItem className="mb-5">
-                <FormLabel>select the code either MAP or Control</FormLabel>
+                <FormLabel>select the code either MAP or control (0 for MAP , 1 for control)</FormLabel>
                 <FormControl className="bg-slate-900">
-                  <Select>
-                    <SelectTrigger className="w-[180px] bg-slate-900">
-                      <SelectValue placeholder="Code" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem
-                        value="0"
-                        onClick={() => {
-                          console.log("Clicked on MAP");
-                          field.onChange("0");
-                          form.setValue("code", 0); // Update the 'code' value in the form state
-                        }}
-                      >
-                        MAP
-                      </SelectItem>
-                      <SelectItem
-                        value="1"
-                        onClick={() => {
-                          console.log("Clicked on P");
-                          field.onChange("1");
-                          form.setValue("code", 1); // Update the 'code' value in the form state
-                        }}
-                      >
-                        P
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+                <Input
+                    type="number"
+                    {...field}
+                    onChange={(e) =>
+                      field.onChange(parseInt(e.target.value, 10))
+                    }
+                  />
                 </FormControl>
               </FormItem>
             )}
