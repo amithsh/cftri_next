@@ -243,16 +243,9 @@ const Page = () => {
           <div className="  min-w-[700px] max-w-[700px] text-white rounded-xl shadow-xl p-4 bg-lime-700  justify-center">
             <div key={modelName} className="grid-cols-3 gap-3">
               <div className="">
-              <h3 className="mb-2">{modelName}</h3>
+                <h3 className="mb-2">{modelName}</h3>
                 <p>Accuracy: {modelData?.accuracy}</p>
-                <p>
-                  Predicted Duration:{" "}
-                  {form.getValues("code") === 0
-                    ? `The shelf life can be extended up to ${
-                        modelData?.predicted_duration
-                      } days`
-                    : modelData?.predicted_duration}
-                </p>
+                <p>Predicted Duration: {modelData?.predicted_duration}</p>
               </div>
             </div>
           </div>
