@@ -25,7 +25,7 @@ import {
 
 const formSchema = z.object({
   room_temperature: z.number(),
-  code: z.number().min(0).max(1),
+  code: z.number().min(0).max(2),
   chab: z.number().min(32).max(39),
   sdchab: z.number().min(0).step(1),
   L: z.number().min(0).max(100).step(1),
@@ -54,12 +54,23 @@ const Page = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      const payload = {
+        temp: values.room_temperature, // Ensure naming consistency with backend expectations
+        code: values.code.toString(), // Convert code to string if necessary; otherwise, keep as is
+        avg_chl_a_b: values.chab,
+        sd_chl_a_b: values.sdchab,
+        mean_l: values.L,
+        mean_a: values.a,
+        mean_b: values.b,
+        hue_angle: values.hue_angle,
+      };
+
       const response = await fetch("http://127.0.0.1:5000/predict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
@@ -75,7 +86,7 @@ const Page = () => {
   }
 
   return (
-    <div className="flex flex-col h-auto p-10 items-center justify-center   bg-black gap-10">
+    <div className="flex flex-col h-auto p-10 items-center justify-center  bg-black gap-10">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -105,7 +116,7 @@ const Page = () => {
             name="code"
             render={({ field }) => (
               <FormItem className="mb-5">
-                <FormLabel>select the code either MAP or control (0 for MAP , 1 for control)</FormLabel>
+                <FormLabel>select the code either MAP or control (1 for MAP , 2 for control)</FormLabel>
                 <FormControl className="bg-slate-900">
                 <Input
                     type="number"

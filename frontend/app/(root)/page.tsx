@@ -19,9 +19,9 @@ const roboto = Roboto({ subsets: ["latin"], weight: "300" });
 export default function Home() {
   const images = Images;
   return (
-    <div className=" h-auto w-auto px-48 mt-4">
+    <div className=" h-auto w-full px-48 mt-4">
       <div className="flex flex-row items-center gap-x-7 justify-center p-9">
-        <div className="w-auto h-auto rounded-lg max-w-[1000px]">
+        <div className="w-auto h-auto rounded-lg max-w-[1700px]">
           <section className="flex items-center justify-center">
             <Swiper
               spaceBetween={1}
@@ -40,7 +40,7 @@ export default function Home() {
                       className="rounded-lg shadow-xl"
                       src={item.url}
                       alt="swiper"
-                      width={600}
+                      width={1000}
                       height={400}
                     />
                   </div>
@@ -49,8 +49,8 @@ export default function Home() {
             </Swiper>
           </section>
         </div>
-        <div className="flex flex-col items-center  justify-between gap-12 ml-8">
-          <div className="flex flex-col items-center justify-center ">
+        <div className="flex flex-col items-center  justify-between min-w-72 gap-12 ml-8">
+          <div className="flex flex-col items-center justify-center w-auto h-auto ">
             <h1
               className={cn(
                 "text-xl font-extrabold text-green-500",
@@ -59,16 +59,17 @@ export default function Home() {
             >
               Recent Blog
             </h1>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center h-auto">
               <Image
-                src={"/image1.jpg"}
+                src={"/images-1.jpg"}
                 alt="image2"
-                width={500}
+                width={400}
                 height={400}
+                layout="fixed"
               />
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center ">
+          <div className="flex flex-col items-center justify-center w-auto ">
             <h1
               className={cn(
                 "text-xl font-extrabold text-green-500",
@@ -79,7 +80,7 @@ export default function Home() {
             </h1>
             {/* Add your announcement content here */}
             <Image
-                src={"/image1.jpg"}
+                src={"/images.jpg"}
                 alt="image2"
                 width={400}
                 height={400}
